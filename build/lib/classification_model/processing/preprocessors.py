@@ -112,16 +112,20 @@ class MissingImputer(BaseEstimator,TransformerMixin):
         self.numerical_variables = numerical_variables
         
     def fit(self,X,y=None):
-        self.non_num_var = [v for v in X.columns if v not in self.numerical_variables]
+        self.imputer_dict = {}
+        for v in X.columns:
+            if v in self.numerical_variables:
+                self.imputer_dict[v] = X[v].mean()
+            else:
+                self.imputer_dict[v] = X[v].mode()[0]
+
         return self
     
     def transform(self,X):
         X = X.copy()
-        for v in self.numerical_variables:
-            X[v] = X[v].fillna(X[v].mean())
-        for vc in self.non_num_var:
-            X[vc] = X[vc].fillna(X[vc].mode()[0])
-        
+        for v in X.columns:
+            X[v] = X[v].fillna(self.imputer_dict[v])
+
         return X
     
     

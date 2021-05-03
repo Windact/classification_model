@@ -24,6 +24,8 @@ MODEL_PIPELINE_NAME = "gbm_classification_output_v"
 # Seed for random state
 SEED = 42
 
+# Model accpetance threshold
+ACCEPTABLE_MODEL_DIFFERENCE = 0.05
 
 VARIABLES_THRESHOLD = {
     'scheme_management': 0.04,

@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: classification-model
-Version: 0.1.0
+Version: 0.2.0
 Summary: Classification model to predict which pumps are functional or not with data from Taarifa datadriven challenge
 Home-page: https://github.com/Windact/classification_model.git
 Author: GeoffroyA

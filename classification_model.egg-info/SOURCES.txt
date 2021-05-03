@@ -23,7 +23,7 @@ classification_model/processing/__init__.py
 classification_model/processing/preprocessors.py
 classification_model/processing/utils.py
 classification_model/trained_models/__init__.py
-classification_model/trained_models/gbm_classification_output_v0.1.0.pkl
+classification_model/trained_models/gbm_classification_output_v0.2.0.pkl
 tests/test_model_helpers/__init__.py
 tests/test_model_helpers/test_predict.py
 tests/test_processing/__init__.py

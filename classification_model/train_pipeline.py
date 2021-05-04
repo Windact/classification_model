@@ -35,7 +35,7 @@ def run_training():
 
     # Training wtih gridsearch
     parameters = {'model__learning_rate':[0.1,0.3,0.5],'model__n_estimators': [100,120,150],'model__subsample': [0.6,0.8,1],'model__max_depth': [6,8,10],'model__min_samples_split':[4,6,10]}
-    clf = GridSearchCV(pipeline.pump_pipeline, parameters, scoring='neg_log_loss',n_jobs=-1,cv=3,refit=True,verbose=0)
+    clf = GridSearchCV(pipeline.pump_pipeline, parameters, scoring='neg_log_loss',n_jobs=-1,cv=3,refit=True,verbose=2)
     clf.fit(X_train, y_train)
     _logger.info(f"Best parameters : {clf.best_params_}")
 

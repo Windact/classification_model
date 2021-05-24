@@ -12,7 +12,6 @@ include classification_model/trained_models/*.pkl
 include classification_model/VERSION
 
 
-include ./tests
 include ./requirements.txt
 exclude *.log
 

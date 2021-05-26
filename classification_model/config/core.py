@@ -2,7 +2,7 @@ import pandas as pd
 import pathlib
 import typing as t
 from pydantic import BaseModel, validator
-from strictyaml import load, YAML, Map, Str, Int, Seq
+from strictyaml import load, YAML
 
 import classification_model
 

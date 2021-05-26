@@ -4,7 +4,6 @@ import numpy as np
 import os
 # Third-party imports
 from sklearn.base import BaseEstimator,TransformerMixin
-from sklearn.preprocessing import KBinsDiscretizer
 
 
 # Drop useless columns

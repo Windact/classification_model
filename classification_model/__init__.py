@@ -1,9 +1,9 @@
 import logging
 
-from classification_model.config import config
+from classification_model.config import core
 from classification_model.config import logging_config
 
-VERSION_PATH = config.PACKAGE_ROOT / 'VERSION'
+VERSION_PATH = core.PACKAGE_ROOT / 'VERSION'
 
 # logger
 logger = logging.getLogger(__name__)

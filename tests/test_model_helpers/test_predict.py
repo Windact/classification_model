@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split
 
-from classification_model import core,predict
+from classification_model.config import core
+from classification_model import predict
 from classification_model import __version__ as _version
 
 

@@ -42,15 +42,11 @@ class ModelConfig(BaseModel):
     ACCEPTABLE_MODEL_DIFFERENCE: float
     VARIABLES_THRESHOLD: t.Dict
     TEST_SIZE: float
-    LOSS_FUNCTION: str 
-    ALLOWED_LOSS_FUNCTIONS: t.Sequence[str]
-
-
     # the order is necessary for validation
-    allowed_loss_functions: t.Tuple[str, ...]
-    loss: str
+    ALLOWED_LOSS_FUNCTIONS: t.Sequence[str]
+    LOSS_FUNCTION: str
 
-    @validator("loss")
+    @validator("LOSS_FUNCTION")
     def allowed_loss_function(cls, value, values):
         """
         Loss function to be optimized.

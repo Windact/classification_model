@@ -60,7 +60,7 @@ def make_prediction(input_data):
 #     y = np.where(y=="functional","functional","non functional or functional needs repair")
 
 #     # Train test split
-#     X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.SEED)
+#     X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.config.app_config.SEED)
 
 #     # Test
 #     pred = make_prediction(X_test)

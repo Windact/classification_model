@@ -1,12 +1,12 @@
 import logging
 
-from classification_model.config import core
+from classification_model.config.core import config, PACKAGE_ROOT
 from classification_model.config import logging_config
 
-VERSION_PATH = core.PACKAGE_ROOT / 'VERSION'
+VERSION_PATH = PACKAGE_ROOT / 'VERSION'
 
 # logger
-logger = logging.getLogger(__name__)
+logger = logging.getLogger(config.app_config.PACKAGE_NAME)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging_config.get_console_handler())
 logger.propagate = False

@@ -24,7 +24,7 @@ pump_pipeline =Pipeline(steps=[("feature_to_keeper",pp.FeatureKeeper(variables_t
                          ("rareCategories_grouper",pp.RareCategoriesGrouping(threshold=core.config.model_config.VARIABLES_THRESHOLD)),
                          ("one_hot_encoder",OneHotEncoder(variables=core.config.model_config.REAL_CATEGORICAL_VARIABLES,drop_last=False)),
                          ("scaler",MinMaxScaler()),
-                         ("model",GradientBoostingClassifier(random_state=core.SEED))])
+                         ("model",GradientBoostingClassifier(random_state=core.config.model_config.SEED))])
 
 
 

@@ -30,7 +30,7 @@ def run_training():
     y = np.where(y=="functional","functional","non functional or functional needs repair")
 
     # Train test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.SEED,test_size=0.2)
+    X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.config.app_config.SEED,test_size=core.config.app_config.TEST_SIZE)
 
 
     # Training wtih gridsearch

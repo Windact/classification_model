@@ -2,7 +2,8 @@ import pandas as pd
 import sklearn
 import joblib
 
-from classification_model import core,pipeline
+from classification_model.config import core
+from classification_model import pipeline
 from classification_model import __version__ as _version
 from classification_model.processing import utils
 

@@ -1,3 +1,4 @@
+import numpy as np
 from classification_model.config import core
 from classification_model.processing import preprocessors as pp
 
@@ -69,3 +70,18 @@ def test_RareCategoriesGrouping(pipeline_inputs):
             assert i not in cat_dict_subject[k]
 
     
+
+def test_MissingImputer(pipeline_inputs):
+    """ Testing RareCategoriesGrouping function """
+    
+    # Given
+    missing_imputer = pp.MissingImputer(numerical_variables=core.config.model_config.NUMERICAL_VARIABLES)
+    X_train, X_test, y_train, y_test = pipeline_inputs
+
+    # When
+    subject = missing_imputer.fit_transform(X_train,y_train)
+
+    # Then
+    assert np.sum(subject.isnull().sum().values) == 0
+
+

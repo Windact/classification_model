@@ -86,22 +86,81 @@ class CategoricalGrouping(BaseEstimator,TransformerMixin):
     
 # Rare categories
 class RareCategoriesGrouping(BaseEstimator, TransformerMixin):
+    """ Group rare categories base on the treshold given for certain categorical variables 
+    
+    Attributes
+    ----------
+    threshold : dict
+        A dictionary with the keys being a categorical variable name and the value a float between 0 and 1 represent the threshold. All classes of the variable below that
+        value will be grouped under the Rare class 
+
+    cat_dict : dict 
+        A dictionary with keys being the categorical variable name and the value a list of classes of that variable that have a frequency below the treshold given in the threshold dictionary
+
+    Methods
+    -------
+    fit(X,y=None)
+        Gets the categories for each variable that are under the frequency threshold.
+        Returns self
+    transform(X)
+        Groups rare categories base on the treshold given for certain categorical variables 
+        Returns X 
+    """
     
     def __init__(self,threshold= {}):
-        
+        """ 
+        Parameters
+        ----------
+        threshold : dict 
+            A dictionary with the keys being a categorical variable name and the value a float between 0 and 1 represent the threshold. All classes of the variable below that
+            value will be grouped under the Rare class 
+        cat_dict : dict 
+            A dictionary with keys being the categorical variable name and the value a list of classes of that variable that have a frequency below the treshold given in the threshold dictionary
+        """
+
         self.threshold = threshold
+        self.cat_dict = {}
         
     def fit(self, X,y=None):
-        return self
-    
-    def transform(self,X):
+        """ Returns self
+
+        Parameters
+        ----------
+        X : pd.DataFrame
+            A pd.DataFrame that must contain at least the variables in threshold keys.
+        y : pd.Series, optional
+
+        Gets the categories for each variable that are under the frequency threshold.
+
+        Return
+        ------
+        self
+        """
+
         X = X.copy()
         for k,v in self.threshold.items():
             cat_list = X[k].value_counts(normalize=True)
-            cat_list = cat_list[cat_list<v].index
-            X[k] = np.where(X[k].isin(cat_list),"Rare",X[k])
+            self.cat_dict[k] = list(cat_list[cat_list<float(v)].index)
+        return self
+    
+    def transform(self,X):
+        """ Groups rare categories base on the treshold given for certain categorical variables 
+
+        Parameters
+        ----------
+        X : pd.DataFrame
+            A pd.DataFrame that must contain at least the variables in threshold keys.
+        
+        Return
+        ------
+        A pd.DataFrame with the variables with categories below the threshold grouped under the Rare category
+        """
+        X = X.copy()
+        for k,v in self.cat_dict.items():
+            X[k] = np.where(X[k].isin(v),"Rare",X[k])
         
         return X
+    
     
     
 # Missing values

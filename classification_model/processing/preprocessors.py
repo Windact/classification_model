@@ -23,7 +23,7 @@ class FeatureKeeper(BaseEstimator, TransformerMixin):
     transform(X)
         Extract the features inf variables_to_keep from the pd.DataFrame X
     """
-    def __init__(self,variables_to_keep=None):
+    def __init__(self,variables_to_keep):
         """ 
         Parameters
         ----------
@@ -69,7 +69,7 @@ class FeatureKeeper(BaseEstimator, TransformerMixin):
 # Categorical grouping
 class CategoricalGrouping(BaseEstimator,TransformerMixin):
     
-    def __init__(self,config_dict = {}):
+    def __init__(self,config_dict):
         
         self.config_dict = config_dict
         
@@ -107,7 +107,7 @@ class RareCategoriesGrouping(BaseEstimator, TransformerMixin):
         Returns X 
     """
     
-    def __init__(self,threshold= {}):
+    def __init__(self,threshold):
         """ 
         Parameters
         ----------
@@ -140,7 +140,7 @@ class RareCategoriesGrouping(BaseEstimator, TransformerMixin):
         X = X.copy()
         for k,v in self.threshold.items():
             cat_list = X[k].value_counts(normalize=True)
-            self.cat_dict[k] = list(cat_list[cat_list<float(v)].index)
+            self.cat_dict[k] = list(cat_list[cat_list<v].index)
         return self
     
     def transform(self,X):

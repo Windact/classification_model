@@ -40,7 +40,7 @@ class ModelConfig(BaseModel):
     REAL_CATEGORICAL_VARIABLES: t.Sequence[str]
     SEED: int 
     ACCEPTABLE_MODEL_DIFFERENCE: float
-    VARIABLES_THRESHOLD: t.Dict
+    VARIABLES_THRESHOLD: t.Dict[str,float]
     TEST_SIZE: float
     # the order is necessary for validation
     ALLOWED_LOSS_FUNCTIONS: t.Sequence[str]
@@ -60,7 +60,19 @@ class ModelConfig(BaseModel):
             f"the loss parameter specified: {value}, "
             f"is not in the allowed set: {allowed_loss_functions}"
         )
-
+        
+    @validator("VARIABLES_THRESHOLD")
+    def variable_threshold_range(cls,value):
+        print(value)
+        check_list = []
+        for k,v in value.items():
+            if not (v >= 0 and v <=1):
+                check_list.append((k,v))
+        if len(check_list) == 0:
+            return value
+        else:
+            raise ValueError(f"The following key value pairs do not respect the range of the thresholds : {check_list}")
+                
 class Config(BaseModel):
     """Master config object."""
 

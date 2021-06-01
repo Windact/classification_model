@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
-import os
 
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
-import joblib
 import logging
 
 from classification_model.config import core

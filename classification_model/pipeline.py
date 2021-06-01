@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import os
 
-from sklearn.preprocessing import KBinsDiscretizer,MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler
 from feature_engine.transformation import YeoJohnsonTransformer
 from feature_engine.encoding import OneHotEncoder
 from feature_engine.discretisation import EqualWidthDiscretiser

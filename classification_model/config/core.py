@@ -60,10 +60,9 @@ class ModelConfig(BaseModel):
             f"the loss parameter specified: {value}, "
             f"is not in the allowed set: {allowed_loss_functions}"
         )
-        
+
     @validator("VARIABLES_THRESHOLD")
     def variable_threshold_range(cls,value):
-        print(value)
         check_list = []
         for k,v in value.items():
             if not (v >= 0 and v <=1):

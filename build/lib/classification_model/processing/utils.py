@@ -4,7 +4,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 import logging
 
-from classification_model.config import config
+from classification_model.config import core
 from classification_model import __version__ as _version
 
 import logging
@@ -24,12 +24,12 @@ def load_dataset(filename):
     pandas.DataFrame
     """
 
-    _data = pd.read_csv(f"{config.DATASET_DIR/filename}",sep=",", encoding="utf-8")
-    _logger.info(f"{filename} was loaded from {config.DATASET_DIR}")
+    _data = pd.read_csv(f"{core.DATASET_DIR/filename}",sep=",", encoding="utf-8")
+    _logger.info(f"{filename} was loaded from {core.DATASET_DIR}")
     return _data
 
 
-def save_pipeline(pipeline_to_save,save_file_name=f"{config.MODEL_PIPELINE_NAME}{_version}.pkl"):
+def save_pipeline(pipeline_to_save,save_file_name=f"{core.config.app_config.MODEL_PIPELINE_NAME}{_version}.pkl"):
     """ Save a pipeline 
     Save a pipeline and overwrites a pipeline of the same version as this one.
 
@@ -40,8 +40,8 @@ def save_pipeline(pipeline_to_save,save_file_name=f"{config.MODEL_PIPELINE_NAME}
     """
     
     # setting up the versioned filename
-    #save_file_name = f"{config.MODEL_PIPELINE_NAME}{_version}.pkl"
-    save_file_path = config.TRAINED_MODEL_DIR/save_file_name
+    #save_file_name = f"{core.config.app_config.MODEL_PIPELINE_NAME}{_version}.pkl"
+    save_file_path = core.TRAINED_MODEL_DIR/save_file_name
 
     # remove older pipelines
     remove_old_pipelines(files_to_keep=[save_file_name])
@@ -64,7 +64,7 @@ def load_pipeline(file_name):
         A fitted pipeline.
     """
 
-    file_path = config.TRAINED_MODEL_DIR/file_name
+    file_path = core.TRAINED_MODEL_DIR/file_name
     _fitted_pipeline = joblib.load(file_path)
     _logger.info(f"The pipeline {file_name} has been loaded")
     return _fitted_pipeline
@@ -84,7 +84,7 @@ def remove_old_pipelines(files_to_keep):
     # adding __init__.py to the not delete list as we do not want to delete it.
     to_not_remove = files_to_keep + ["__init__.py"]
     removed_files = []
-    for file in config.TRAINED_MODEL_DIR.iterdir():
+    for file in core.TRAINED_MODEL_DIR.iterdir():
         if file.name not in to_not_remove:
             file.unlink()
             removed_files.append(file.name)
@@ -143,17 +143,17 @@ def input_data_is_valid(input_data):
     data = input_data.copy()
 
     # Check if the features expected are in the input_data
-    features_missing = [feature for feature in config.VARIABLES_TO_KEEP if feature not in data.columns]
+    features_missing = [feature for feature in core.config.model_config.VARIABLES_TO_KEEP if feature not in data.columns]
 
     if len(features_missing)> 0:
         _logger.error(f"Those features are missing in the input data : {features_missing}")
         return False
 
     # Check if the features are in their expected type
-    input_data_num_var = [var for var in config.NUMERICAL_VARIABLES if data[var].dtype != "O"]
+    input_data_num_var = [var for var in core.config.model_config.NUMERICAL_VARIABLES if data[var].dtype != "O"]
 
-    if len(input_data_num_var) != len(config.NUMERICAL_VARIABLES):
-        _logger.error(f"Some of the expected numerical variables are not numerical : {[(var,data[var].dtype) for var in config.NUMERICAL_VARIABLES if var not in input_data_num_var]}")
+    if len(input_data_num_var) != len(core.config.model_config.NUMERICAL_VARIABLES):
+        _logger.error(f"Some of the expected numerical variables are not numerical : {[(var,data[var].dtype) for var in core.config.model_config.NUMERICAL_VARIABLES if var not in input_data_num_var]}")
         return False
 
     _logger.info("The input data has been validated")

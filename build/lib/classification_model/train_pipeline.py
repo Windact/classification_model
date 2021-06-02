@@ -1,11 +1,8 @@
 import pandas as pd
 import numpy as np
-import os
 
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.model_selection import GridSearchCV
-import joblib
 import logging
 
 from classification_model.config import core
@@ -30,12 +27,12 @@ def run_training():
     y = np.where(y=="functional","functional","non functional or functional needs repair")
 
     # Train test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.config.model_config.TEST_SIZE.SEED,test_size=core.config.model_config.TEST_SIZE)
+    X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.config.model_config.SEED,test_size=core.config.model_config.TEST_SIZE)
 
 
     # Training wtih gridsearch
     parameters = {'model__learning_rate':[0.1,0.3,0.5],'model__n_estimators': [100,120,150],'model__subsample': [0.6,0.8,1],'model__max_depth': [6,8,10],'model__min_samples_split':[4,6,10]}
-    clf = GridSearchCV(pipeline.pump_pipeline, parameters, scoring=core.config.model_config.LOSS_FUNCTION,n_jobs=-1,cv=3,refit=True,verbose=0)
+    clf = GridSearchCV(pipeline.pump_pipeline, parameters, scoring=core.config.model_config.LOSS_FUNCTION,n_jobs=-1,cv=3,refit=True,verbose=2)
     clf.fit(X_train, y_train)
     _logger.info(f"Best parameters : {clf.best_params_}")
 

@@ -3,7 +3,7 @@ import joblib
 import logging
 
 from classification_model import __version__ as _version
-from classification_model import config
+from classification_model.config import core
 from classification_model.processing import utils
 
 _logger = logging.getLogger(__name__)
@@ -28,7 +28,7 @@ def make_prediction(input_data):
     # Checking if the data is valid
     if utils.input_data_is_valid(data):
         # loading the latest fitted pipeline
-        pipe_line_file_name = f"{config.MODEL_PIPELINE_NAME}{_version}.pkl"
+        pipe_line_file_name = f"{core.config.app_config.MODEL_PIPELINE_NAME}{_version}.pkl"
         _pipe_pump = utils.load_pipeline(file_name=pipe_line_file_name)
         # Predictions
         outputs = _pipe_pump.predict(data)
@@ -50,17 +50,17 @@ def make_prediction(input_data):
 #     from sklearn.model_selection import train_test_split
 #     from sklearn.metrics import accuracy_score
 
-#     data = pd.read_csv(config.TRAIN_DATA_FILE,sep=",", encoding="utf-8")
+#     data = pd.read_csv(core.TRAIN_DATA_FILE,sep=",", encoding="utf-8")
 
 #     # Split in X and y
-#     X = data.drop(labels=config.TARGET_FEATURE_NAME, axis=1)
-#     y = data[config.TARGET_FEATURE_NAME]
+#     X = data.drop(labels=core.TARGET_FEATURE_NAME, axis=1)
+#     y = data[core.TARGET_FEATURE_NAME]
 
 #     # For the 2 classes classification
 #     y = np.where(y=="functional","functional","non functional or functional needs repair")
 
 #     # Train test split
-#     X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=config.SEED)
+#     X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.config.app_config.SEED)
 
 #     # Test
 #     pred = make_prediction(X_test)

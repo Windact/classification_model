@@ -4,6 +4,7 @@ requirements.txt
 setup.py
 classification_model/VERSION
 classification_model/__init__.py
+classification_model/config.yml
 classification_model/pipeline.py
 classification_model/predict.py
 classification_model/train_pipeline.py
@@ -24,7 +25,7 @@ classification_model/processing/errors.py
 classification_model/processing/preprocessors.py
 classification_model/processing/utils.py
 classification_model/trained_models/__init__.py
-classification_model/trained_models/gbm_classification_output_v0.3.1.pkl
+classification_model/trained_models/gbm_classification_output_v0.3.2.pkl
 tests/test_config/__init__.py
 tests/test_config/test_config.py
 tests/test_model_helpers/__init__.py

@@ -10,13 +10,10 @@ feature-engine>=1.0.2,<1.1.0
 scikit-learn>=0.23.2,<0.24.0
 joblib>=1.0.1,<1.1.0
 
-
-# For test
-pytest>=6.1.1,<6.2.0
-
 # For packaging
 setuptools>=50.3.1,<50.4.0
 wheel>=0.35.1,<0.36.0
 
-# Older model version for model quality test and monitoring
-dl_classification_model>=0.1.0,<0.2.0
+
+
+

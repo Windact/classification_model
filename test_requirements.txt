@@ -10,6 +10,6 @@ dl_classification_model>=0.1.0,<0.2.0
 # enforce code format
 black>=21.5b2,<22.0
 # report non respect of PEP8
-flake8>=3.9.2n,<3.10.0
+flake8>=3.9.2,<3.10.0
 # Check static code
 mypi>=0.0.3,<0.1.0

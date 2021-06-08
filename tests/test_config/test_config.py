@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from classification_model.config import core 
+from classification_model.config import core
 import pytest
 from pydantic import ValidationError
 
@@ -201,9 +201,10 @@ ALLOWED_LOSS_FUNCTIONS:
 
 """
 
+
 def test_fetch_config_from_yaml(tmpdir):
-    """ Test if the config object has the 2 attributes config as expected """
-    
+    """Test if the config object has the 2 attributes config as expected"""
+
     # Given
     config_dir = Path(tmpdir)
     # Create a config file in a temporary directory
@@ -218,8 +219,9 @@ def test_fetch_config_from_yaml(tmpdir):
     assert config.model_config
     assert config.app_config
 
+
 def test_validation_error_raise_for_invalid_config(tmpdir):
-    """ Test if an error is raised for a config ValidationError """
+    """Test if an error is raised for a config ValidationError"""
 
     # Given
     config_dir = Path(tmpdir)
@@ -231,12 +233,13 @@ def test_validation_error_raise_for_invalid_config(tmpdir):
     # When
     with pytest.raises(ValidationError) as e:
         core.create_and_validate_config(parsed_config=parsed_config)
-    
+
     # Then
     assert "not in the allowed set" in str(e.value)
 
+
 def test_validation_error_raise_for_missing_field(tmpdir):
-    """ Test if errors are raised when fields are missing """
+    """Test if errors are raised when fields are missing"""
 
     # Given
     config_dir = Path(tmpdir)
@@ -248,7 +251,7 @@ def test_validation_error_raise_for_missing_field(tmpdir):
     # When
     with pytest.raises(ValidationError) as e:
         core.create_and_validate_config(parsed_config=parsed_config)
-    
+
     # Then
     assert "field required" in str(e.value)
     assert "ACCEPTABLE_MODEL_DIFFERENCE" not in str(e.value)

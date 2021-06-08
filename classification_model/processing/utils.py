@@ -11,48 +11,53 @@ import logging
 
 _logger = logging.getLogger(__name__)
 
+
 def load_dataset(filename):
-    """ Load a dataset from the config.DATASET_DIR directory.
+    """Load a dataset from the config.DATASET_DIR directory.
 
     Parameters
     ----------
     filename : str
         A csv file filename
-    
+
     Returns
     -------
     pandas.DataFrame
     """
 
-    _data = pd.read_csv(f"{core.DATASET_DIR/filename}",sep=",", encoding="utf-8")
+    _data = pd.read_csv(f"{core.DATASET_DIR/filename}", sep=",", encoding="utf-8")
     _logger.info(f"{filename} was loaded from {core.DATASET_DIR}")
     return _data
 
 
-def save_pipeline(pipeline_to_save,save_file_name=f"{core.config.app_config.MODEL_PIPELINE_NAME}{_version}.pkl"):
-    """ Save a pipeline 
+def save_pipeline(
+    pipeline_to_save,
+    save_file_name=f"{core.config.app_config.MODEL_PIPELINE_NAME}{_version}.pkl",
+):
+    """Save a pipeline
     Save a pipeline and overwrites a pipeline of the same version as this one.
 
     Parameters
     ----------
     pipeline_to_save : pipeline
-        A pipeline with its preprocessing steps and the estimator 
+        A pipeline with its preprocessing steps and the estimator
     """
-    
+
     # setting up the versioned filename
-    #save_file_name = f"{core.config.app_config.MODEL_PIPELINE_NAME}{_version}.pkl"
-    save_file_path = core.TRAINED_MODEL_DIR/save_file_name
+    # save_file_name = f"{core.config.app_config.MODEL_PIPELINE_NAME}{_version}.pkl"
+    save_file_path = core.TRAINED_MODEL_DIR / save_file_name
 
     # remove older pipelines
     remove_old_pipelines(files_to_keep=[save_file_name])
     # saving the pipeline
-    joblib.dump(pipeline_to_save,save_file_path)
+    joblib.dump(pipeline_to_save, save_file_path)
     # logging
     _logger.info(f"The pipeline was saved as : {save_file_name}")
 
+
 def load_pipeline(file_name):
-    """ load a saved pipeline 
-    
+    """load a saved pipeline
+
     Parameters
     ----------
     file_name: str
@@ -64,17 +69,17 @@ def load_pipeline(file_name):
         A fitted pipeline.
     """
 
-    file_path = core.TRAINED_MODEL_DIR/file_name
+    file_path = core.TRAINED_MODEL_DIR / file_name
     _fitted_pipeline = joblib.load(file_path)
     _logger.info(f"The pipeline {file_name} has been loaded")
     return _fitted_pipeline
 
 
 def remove_old_pipelines(files_to_keep):
-    """  Remove previous pipeline based on the version.
+    """Remove previous pipeline based on the version.
 
     Do not remove the __init__.py file and log the removed files if there was.
-    
+
     Parameters
     ----------
     files_to_keep : list
@@ -88,21 +93,20 @@ def remove_old_pipelines(files_to_keep):
         if file.name not in to_not_remove:
             file.unlink()
             removed_files.append(file.name)
-    
+
     # Logging the removal of files if there was.
-    if len(removed_files)>0:
+    if len(removed_files) > 0:
         _logger.info(f"file/pipelines removed : {removed_files}")
 
 
-
 # Show the classification report for GBM model or model with classes_ attributes for classes name for the train and test sets.
-def show_results(clf,X_train,X_test,y_train,y_test):
-    """  print the classification report of a model on the training set and test set.
+def show_results(clf, X_train, X_test, y_train, y_test):
+    """print the classification report of a model on the training set and test set.
 
     Parameters
     ----------
-    clf : a classifier estimator, can be a pipeline with an estimator or an estimator. 
-        Must have the classes_ attribute for the classes name. 
+    clf : a classifier estimator, can be a pipeline with an estimator or an estimator.
+        Must have the classes_ attribute for the classes name.
     X_train : pandas.Dataframe or numpy.array
             The train dataset
     X_test :  pandas.Dataframe or numpy.array
@@ -114,22 +118,21 @@ def show_results(clf,X_train,X_test,y_train,y_test):
     """
 
     print(f"***** Report for the model *****")
-    print(' ***** Train ******')
+    print(" ***** Train ******")
     y_pred = clf.predict(X_train)
-    #print(f"  Accuracy Score : {accuracy_score(y_train,y_pred)}")
+    # print(f"  Accuracy Score : {accuracy_score(y_train,y_pred)}")
     _logger.info(f"Train accuracy score: {accuracy_score(y_train,y_pred)}")
     print(classification_report(y_train, y_pred, target_names=clf.classes_))
-    print(' ***** Test ******')
+    print(" ***** Test ******")
     y_pred = clf.predict(X_test)
-    #print(f"  Accuracy Score : {accuracy_score(y_test,y_pred)}")
+    # print(f"  Accuracy Score : {accuracy_score(y_test,y_pred)}")
     _logger.info(f"Test accuracy score: {accuracy_score(y_test,y_pred)}")
     print(classification_report(y_test, y_pred, target_names=clf.classes_))
 
 
-
 def input_data_is_valid(input_data):
-    """ Check the input data is valid or not. 
-    
+    """Check the input data is valid or not.
+
     Parameters
     ----------
     input_data : pd.DataFrame
@@ -143,17 +146,29 @@ def input_data_is_valid(input_data):
     data = input_data.copy()
 
     # Check if the features expected are in the input_data
-    features_missing = [feature for feature in core.config.model_config.VARIABLES_TO_KEEP if feature not in data.columns]
+    features_missing = [
+        feature
+        for feature in core.config.model_config.VARIABLES_TO_KEEP
+        if feature not in data.columns
+    ]
 
-    if len(features_missing)> 0:
-        _logger.error(f"Those features are missing in the input data : {features_missing}")
+    if len(features_missing) > 0:
+        _logger.error(
+            f"Those features are missing in the input data : {features_missing}"
+        )
         return False
 
     # Check if the features are in their expected type
-    input_data_num_var = [var for var in core.config.model_config.NUMERICAL_VARIABLES if data[var].dtype != "O"]
+    input_data_num_var = [
+        var
+        for var in core.config.model_config.NUMERICAL_VARIABLES
+        if data[var].dtype != "O"
+    ]
 
     if len(input_data_num_var) != len(core.config.model_config.NUMERICAL_VARIABLES):
-        _logger.error(f"Some of the expected numerical variables are not numerical : {[(var,data[var].dtype) for var in core.config.model_config.NUMERICAL_VARIABLES if var not in input_data_num_var]}")
+        _logger.error(
+            f"Some of the expected numerical variables are not numerical : {[(var,data[var].dtype) for var in core.config.model_config.NUMERICAL_VARIABLES if var not in input_data_num_var]}"
+        )
         return False
 
     _logger.info("The input data has been validated")

@@ -2,8 +2,9 @@ import pytest
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from classification_model.config import core  
+from classification_model.config import core
 from classification_model.processing import utils
+
 
 @pytest.fixture(scope="session")
 def pipeline_inputs():
@@ -16,12 +17,20 @@ def pipeline_inputs():
     y = data[core.config.model_config.TARGET_FEATURE_NAME]
 
     # For the 2 classes classification
-    y = np.where(y=="functional","functional","non functional or functional needs repair")
+    y = np.where(
+        y == "functional", "functional", "non functional or functional needs repair"
+    )
 
     # Train test split
-    X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=core.config.model_config.SEED,test_size=core.config.model_config.TEST_SIZE)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        random_state=core.config.model_config.SEED,
+        test_size=core.config.model_config.TEST_SIZE,
+    )
 
     return X_train, X_test, y_train, y_test
+
 
 @pytest.fixture(scope="session")
 def pipeline_inputs_tests():
@@ -34,7 +43,8 @@ def pipeline_inputs_tests():
     y = data[core.config.model_config.TARGET_FEATURE_NAME]
 
     # For the 2 classes classification
-    y = np.where(y=="functional","functional","non functional or functional needs repair")
+    y = np.where(
+        y == "functional", "functional", "non functional or functional needs repair"
+    )
 
-
-    return X,y
+    return X, y
